@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements OnScreenshotTaken
         setSupportActionBar(toolbar);
 
         ScreenWatch screenWatch=new ScreenWatch(this);
+        screenWatch.deleteScreenshot(true);
         screenWatch.start();
 
 

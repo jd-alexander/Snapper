@@ -14,6 +14,7 @@ public class ScreenWatch extends FileObserver {
     private static final String TAG = "ScreenWatch";
     private static final String PATH = Environment.getExternalStorageDirectory().toString() + "/Pictures/Screenshots/";
 
+    private boolean deleteScreenshot=false;
     private OnScreenshotTakenListener mListener;
     private String mLastTakenPath;
 
@@ -43,10 +44,25 @@ public class ScreenWatch extends FileObserver {
             mLastTakenPath = path;
             File file = new File(PATH+path);
 
-            if(mListener!=null)
-            mListener.onScreenshotTaken(Uri.fromFile(file));
+            if(deleteScreenshot)
+            {
+                if(file!=null)
+                    file.delete();
 
-            Log.i(TAG, "Send event to listener.");
+                /*
+                * A null uri is returned to listener once screenshot
+                * has been deleted.
+                * */
+                if(mListener!=null)
+                    mListener.onScreenshotTaken(null);
+
+            }
+            else
+            {
+
+                if(mListener!=null)
+                    mListener.onScreenshotTaken(Uri.fromFile(file));
+            }
         }
     }
 
@@ -57,5 +73,10 @@ public class ScreenWatch extends FileObserver {
     public void stop() {
         super.stopWatching();
     }
+
+    public void deleteScreenshot(boolean deleteScreenshot) {
+        this.deleteScreenshot = deleteScreenshot;
+    }
+
 
 }
