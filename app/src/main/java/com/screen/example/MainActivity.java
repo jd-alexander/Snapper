@@ -1,5 +1,6 @@
 package com.screen.example;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +10,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.screen.watch.OnScreenshotTakenListener;
+import com.screen.watch.ScreenWatch;
+
+public class MainActivity extends AppCompatActivity implements OnScreenshotTakenListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ScreenWatch screenWatch=new ScreenWatch(this);
+        screenWatch.start();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +56,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onScreenshotTaken(Uri uri) {
+
     }
 }

@@ -22,18 +22,30 @@ public class ScreenWatch extends FileObserver {
         mListener = listener;
     }
 
+    public ScreenWatch() {
+        super(PATH, FileObserver.CLOSE_WRITE);
+    }
+
+    public void setWatcher(OnScreenshotTakenListener listener)
+    {
+        mListener=listener;
+    }
+
     @Override
     public void onEvent(int event, String path) {
         Log.i(TAG, "Event:" + event + "\t" + path);
 
         if (path==null || event!=FileObserver.CLOSE_WRITE)
-            Log.i(TAG, "Don't care.");
+            Log.i(TAG, "Not important");
         else if (mLastTakenPath!=null && path.equalsIgnoreCase(mLastTakenPath))
             Log.i(TAG, "This event has been observed before.");
         else {
             mLastTakenPath = path;
             File file = new File(PATH+path);
+
+            if(mListener!=null)
             mListener.onScreenshotTaken(Uri.fromFile(file));
+
             Log.i(TAG, "Send event to listener.");
         }
     }
