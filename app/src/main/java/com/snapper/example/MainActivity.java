@@ -1,4 +1,4 @@
-package com.screen.example;
+package com.snapper.example;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.screen.watch.OnScreenshotTakenListener;
-import com.screen.watch.ScreenWatch;
+import com.snapper.OnScreenshotTakenListener;
+import com.snapper.Snapper;
 
 public class MainActivity extends AppCompatActivity implements OnScreenshotTakenListener {
 
@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity implements OnScreenshotTaken
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ScreenWatch screenWatch=new ScreenWatch(this);
-        screenWatch.deleteScreenshot(true);
-        screenWatch.start();
+        Snapper snapper =new Snapper(this);
+        snapper.deleteScreenshot(true);
+        snapper.start();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

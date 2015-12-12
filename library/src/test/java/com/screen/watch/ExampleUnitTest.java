@@ -1,4 +1,4 @@
-package com.screen.watch;
+package com.snapper.snapper;
 
 import org.junit.Test;
 

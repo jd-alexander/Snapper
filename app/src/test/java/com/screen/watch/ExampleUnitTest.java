@@ -1,4 +1,4 @@
-package com.screen.example;
+package com.snapper.example;
 
 import org.junit.Test;
 

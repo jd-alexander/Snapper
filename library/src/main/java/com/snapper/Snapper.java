@@ -1,4 +1,4 @@
-package com.screen.watch;
+package com.snapper;
 
 import android.app.Activity;
 import android.database.ContentObserver;
@@ -17,20 +17,20 @@ import java.io.File;
 /**
  * Created by Joel on 26/10/2015.
  */
-public class ScreenWatch extends FileObserver {
-    private static final String TAG = "ScreenWatch";
+public class Snapper extends FileObserver {
+    private static final String TAG = "Snapper";
     private static final String PATH = Environment.getExternalStorageDirectory().toString() + "/Pictures/Screenshots/";
 
     private boolean deleteScreenshot=false;
     private OnScreenshotTakenListener mListener;
     private String mLastTakenPath;
 
-    public ScreenWatch(OnScreenshotTakenListener listener) {
+    public Snapper(OnScreenshotTakenListener listener) {
         super(PATH, FileObserver.CLOSE_WRITE);
         mListener = listener;
     }
 
-    public ScreenWatch() {
+    public Snapper() {
         super(PATH, FileObserver.CLOSE_WRITE);
     }
 
