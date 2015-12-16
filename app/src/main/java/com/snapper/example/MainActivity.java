@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snapper.OnScreenshotTakenListener;
 import com.snapper.Snapper;
@@ -62,5 +64,8 @@ public class MainActivity extends AppCompatActivity implements OnScreenshotTaken
     @Override
     public void onScreenshotTaken(Uri uri) {
 
+        TextView textView=(TextView) findViewById(R.id.text);
+        textView.setText("Screenshot");
+        Toast.makeText(this,"Screenshot taken",Toast.LENGTH_LONG).show();
     }
 }

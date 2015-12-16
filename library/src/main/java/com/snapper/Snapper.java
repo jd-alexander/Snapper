@@ -24,69 +24,15 @@ public class Snapper extends FileObserver {
     private boolean deleteScreenshot = false;
     private OnScreenshotTakenListener mListener;
     private String mLastTakenPath;
-    private Activity activity;
-    private ContentObserver contentObserver;
-
-    private Mode watchMode;
 
     public Snapper(OnScreenshotTakenListener listener) {
         super(PATH, FileObserver.CLOSE_WRITE);
         mListener = listener;
-        watchMode = Mode.FILEOBSERVER;
     }
 
     public Snapper() {
         super(PATH, FileObserver.CLOSE_WRITE);
-        watchMode = Mode.FILEOBSERVER;
 
-    }
-
-    public void useContentObserver(final Activity activity) {
-        watchMode = Mode.CONTENTOBSERVER;
-        this.activity=activity;
-        contentObserver=new ContentObserver(handler) {
-            @Override
-            public boolean deliverSelfNotifications() {
-                Log.d(TAG, "deliverSelfNotifications");
-                return super.deliverSelfNotifications();
-            }
-
-            @Override
-            public void onChange(boolean selfChange) {
-                super.onChange(selfChange);
-            }
-
-            @Override
-            public void onChange(boolean selfChange, Uri uri) {
-                Log.d(TAG, "onChange " + uri.toString());
-                if (uri.toString().matches(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString() + "/[0-9]+")) {
-
-                    Cursor cursor = null;
-                    try {
-                        cursor = activity.getContentResolver().query(uri, new String[]{
-                                MediaStore.Images.Media.DISPLAY_NAME,
-                                MediaStore.Images.Media.DATA
-                        }, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            final String fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
-                            final String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                            // TODO: apply filter on the file name to ensure it's screen shot event
-                            Log.d(TAG, "screen shot added " + fileName + " " + path);
-                        }
-                    } finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
-                    }
-                }
-                super.onChange(selfChange, uri);
-            }
-        };
-
-    }
-
-    public Mode getWatchMode() {
-        return watchMode;
     }
 
 
@@ -126,44 +72,19 @@ public class Snapper extends FileObserver {
     }
 
     public void start() {
-        if (watchMode.equals(Mode.FILEOBSERVER))
-            super.startWatching();
-        else if(watchMode.equals(Mode.CONTENTOBSERVER))
-            startContentObserver();
+        super.startWatching();
     }
 
     public void stop() {
-        if (watchMode.equals(Mode.FILEOBSERVER))
-            super.stopWatching();
-        else if(watchMode.equals(Mode.CONTENTOBSERVER))
-            unregisterContentObserver();
+        super.stopWatching();
     }
 
-    public void unregisterContentObserver()
-    {
-        if(watchMode.equals(Mode.CONTENTOBSERVER))
-        activity.getContentResolver().unregisterContentObserver(contentObserver);
-    }
 
     public void deleteScreenshot(boolean deleteScreenshot) {
         this.deleteScreenshot = deleteScreenshot;
     }
 
 
-    HandlerThread handlerThread = new HandlerThread("content_observer");
-    //handlerThread.start();
-    final Handler handler = new Handler(handlerThread.getLooper()) {
 
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    };
 
-    public void startContentObserver() {
-        watchMode = Mode.CONTENTOBSERVER;
-        activity.getContentResolver().registerContentObserver(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                true,contentObserver);
-    }
 }
