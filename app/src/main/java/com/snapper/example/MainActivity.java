@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnScreenshotTaken
         setSupportActionBar(toolbar);
 
         Snapper snapper =new Snapper(this);
-        snapper.deleteScreenshot(true);
+       // snapper.deleteScreenshot(true);
         snapper.start();
 
 
