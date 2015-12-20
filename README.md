@@ -1,3 +1,3 @@
 # Snapper
 
-Not ready for public use as yet.
+Screenshot detection observer for Android.
